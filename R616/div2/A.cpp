@@ -2,7 +2,6 @@
 
 int N;
 int digit[3010];
-bool check[3010];
 
 int main() {
     int TC;
@@ -10,67 +9,25 @@ int main() {
     while(TC--) {
         scanf("%d", &N); getchar();
         char c;
+        int odd = 0;
         for(int i = 0; i < N; ++i) {
             scanf("%c", &c);
             digit[i] = c - '0';
+            if(digit[i] % 2)
+                ++odd;
         }
         getchar();
-
-        int even = 0, odd = 0;
-        for(int i = 0; i < N; ++i) {
-            if(digit[i] % 2 == 0)
-                ++even;
-            else
-                ++odd;
-            check[i] = true;
-        }
-
-        for(int i = N-1; i > 0 && (digit[i] % 2 == 0); --i) {
-            --N;
-            --even;
-        }
-
-        if(odd % 2) {
-            for(int i = N-2; i >= 0; --i) {
+        if(odd > 1) {
+            for(int i = 0, j = 0; i < N && j < 2; ++i) {
                 if(digit[i] % 2) {
-                    check[i] = false;
-                    odd--;
-                    break;
-                }   
-            }
-            bool tmp = false;
-            for(int i = 0; i < N-1; ++i) {
-                if(check[i]) {
-                    if(tmp && digit[i] != 0) {
-                        tmp = true;
-                    }
-                    if(!tmp && digit[i] == 0) {
-                        even--;
-                        check[i] = false;
-                    }
+                    printf("%d", digit[i]);
+                    j++;
                 }
             }
-        }
-
-        if(odd + even <= 0) {
-            printf("-1\n");
+            printf("\n");
         } else {
-            int sum = 0;
-            for(int i = 0; i < N; ++i) {
-                if(check[i])
-                    sum += digit[i];
-            }
-            if(sum % 2 == 0 && digit[N-1] % 2 != 0) {
-                for(int i = 0; i < N; ++i) {
-                    if(check[i])
-                        printf("%d", digit[i]);
-                }
-                printf("\n");
-            } else {
-                printf("-1\n");
-            }
+            printf("-1\n");
         }
-
     }
     return 0;
 }
