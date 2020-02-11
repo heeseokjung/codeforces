@@ -2,49 +2,28 @@
 
 int N;
 int arr[100000];
-int digit[33];
+int suffix[100001];
 
 int main() {
     scanf("%d", &N);
     int total = 0;
-    for(int i = 0; i < N; ++i) {
+    for(int i = 0; i < N; ++i)
         scanf("%d", arr+i);
-        int p = 1, pos = 0;
-        while(p <= arr[i]) {
-            if(p & arr[i])
-                digit[pos]++;
-            p = p << 1;
-            pos++;
-        }
-    }
-    int mx = -1, idx;
-    int copy[33];
+    for(int i = N-1; i >= 0; --i)
+        suffix[i] = arr[i] | suffix[i+1];
+    int mx = -1, mx_pos;
+    int prefix = 0;
     for(int i = 0; i < N; ++i) {
-        int x = arr[i];
-        for(int j = 0; j < 33; ++j)
-            copy[j] = digit[j];
-        int p = 1, pos = 0;
-        while(p <= x) {
-            if(p & x)
-                copy[pos]--;
-            p = p << 1;
-            pos++;
+        int y = prefix | suffix[i+1];
+        if((arr[i] & ~y) > mx) {
+            mx = arr[i] & ~y;
+            mx_pos = i;
         }
-        p = 0;
-        for(int j = 0; j < 33; ++j) {
-            int tmp = 1;
-            if(copy[j])
-                tmp = tmp << j;
-            p = p | tmp;
-        }
-        if((x & ~p) > mx) {
-            mx = x & ~p;
-            idx = i;
-        }
+        prefix = prefix | arr[i];
     }
-    printf("%d ", arr[idx]);
+    printf("%d ", arr[mx_pos]);
     for(int i = 0; i < N; ++i) {
-        if(i == idx)
+        if(i == mx_pos)
             continue;
         printf("%d ", arr[i]);
     }
