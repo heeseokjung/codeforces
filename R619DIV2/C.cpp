@@ -4,16 +4,13 @@ int main() {
     int TC;
     scanf("%d", &TC);
     while(TC--) {
-        int N, M;
-        scanf("%d %d", &N, &M);
-        long long ans = 0;
-        long long x = N;
-        for(int i = 1, j; i <= M; ++i) {
-            j = (1 << i);
-            x = x/j + (x%j ? 1 : 0);
-            ans += (long long)x*x*i;
-        }
-        printf("%lld\n", ans);
+        long long N, M;
+        scanf("%lld %lld", &N, &M);
+        long long total = N*(N + 1)/2LL;
+        long long k = (N-M)/(M+1);
+        total -= k*(k+1)*(M+1)/2LL;
+        total -= (k+1)*((N-M)%(M+1));
+        printf("%lld\n", total);
     }
     return 0;
 }
