@@ -20,19 +20,18 @@ int main() {
             pos[v[i]] = i;
 
         bool valid = true;
-        int prev = -1;
+        int next = -1;
         for(int i = 1; i < N; ++i) {
             int p = pos[i];
             occupy[p] = true;
-            if(prev == N-1 || (p != N-1 && occupy[p+1])) {
-                prev = -1;
-            } else {
-                if(prev != -1 && prev+1 != p) {
-                    valid = false;
-                    break;
-                }
-                prev = p;
+            if(next != -1 && next != p) {
+                valid = false;
+                break;
             }
+            if(p == N-1 || occupy[p+1])
+                next = -1;
+            else
+                next = p+1;
         }
 
         if(valid)
