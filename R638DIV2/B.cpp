@@ -12,41 +12,26 @@ int main() {
         vector<int> v(N);
         for(int i = 0; i < N; ++i)
             scanf("%d", &v[i]);
- 
+
         set<int> s;
-        bool imp = false;
+        vector<int> period;
         for(int i = 0; i < N; ++i) {
-            if(i < K) {
+            if(s.find(v[i]) == s.end()) {
+                period.push_back(v[i]);
                 s.insert(v[i]);
-            } else {
-                if(s.find(v[i]) == s.end()) {
-                    imp = true;
-                    break;
-                }
             }
         }
- 
-        if(imp) {
+
+        if(period.size() > K) {
             printf("-1\n");
         } else {
-            vector<int> subarr(K);
-            for(int i = 0; i < K; ++i)
-                subarr[i] = v[i];
-            
-            vector<int> ans;
-            for(int i = 0, j = 0; i < N; ) {
-                if(v[i] == subarr[j%K]) {
-                    ans.push_back(v[i]);
-                    ++i; ++j;
-                } else {
-                    ans.push_back(subarr[j%K]);
-                    ++j;
-                }
+            while((int)period.size() < K)
+                period.push_back(1);
+            printf("%d\n", N*K);
+            for(int i = 0; i < N; ++i) {
+                for(int j = 0; j < K; ++j)
+                    printf("%d ", period[j]);
             }
- 
-            printf("%d\n", (int)ans.size());
-            for(int i = 0; i < (int)ans.size(); ++i)
-                printf("%d ", ans[i]);
             printf("\n");
         }
     }
